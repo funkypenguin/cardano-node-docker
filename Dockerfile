@@ -1,5 +1,6 @@
 from debian:stable-slim
 LABEL maintainer="dro@arrakis.it"
+ARG CARDANO_BRANCH=1.18.0
 
 # Install build dependencies
 RUN apt-get update -y
@@ -26,12 +27,11 @@ RUN wget https://downloads.haskell.org/~ghc/8.6.5/ghc-8.6.5-x86_64-deb9-linux.ta
 # Install libsodium
 RUN git clone https://github.com/input-output-hk/libsodium \
     && cd libsodium \
-    && git checkout 66f017f1 \
+    && echo git checkout 66f017f1 \
     && ./autogen.sh && ./configure && make && make install
 RUN export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 
 # Install cardano-node
-ARG CARDANO_BRANCH
 RUN echo "Building $CARDANO_BRANCH..." \
     && echo $CARDANO_BRANCH > /CARDANO_BRANCH
 RUN mkdir -p /cardano-node/
