@@ -51,7 +51,8 @@ COPY --from=builder /root/.cabal/bin/cardano-* /usr/local/bin/
 COPY --from=builder /usr/local/lib/libsodium* /usr/local/lib/
 
 # Install tools
-RUN apt-get update && apt-get install -y vim procps dnsutils
+RUN apt-get update && apt-get install -y vim procps dnsutils python3 python3-pip tmux && \
+    rm -rf /var/lib/apt/lists/*
 
 # Expose ports
 ## cardano-node, EKG, Prometheus
@@ -86,4 +87,6 @@ RUN echo "source /scripts/init_node_vars" >> /root/.bashrc
 ADD scripts/ /scripts/
 RUN chmod -R +x /scripts/
 
+# Add non-privileged user (the "nobody" user in debian-slim)
+USER 65534
 ENTRYPOINT ["/scripts/start-cardano-node"]
