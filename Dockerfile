@@ -1,4 +1,4 @@
-from debian:stable-slim
+from debian:stable-slim as builder
 LABEL maintainer="dro@arrakis.it"
 ARG CARDANO_BRANCH=1.18.0
 
@@ -44,8 +44,14 @@ RUN echo -e "package cardano-crypto-praos\n  flags: -external-libsodium-vrf" > c
 RUN cabal build all
 RUN cabal install cardano-node cardano-cli
 
+from debian:stable-slim
+
+# Copy the binaries/libraries we've just built
+COPY --from=builder /root/.cabal/bin/cardano-* /usr/local/bin/
+COPY --from=builder /usr/local/lib/libsodium* /usr/local/lib/
+
 # Install tools
-RUN apt-get install -y vim procps dnsutils
+RUN apt-get update && apt-get install -y vim procps dnsutils
 
 # Expose ports
 ## cardano-node, EKG, Prometheus
@@ -67,7 +73,8 @@ ENV NODE_PORT="3000" \
     POOL_MARGIN="0.05" \
     METADATA_URL="" \
     PUBLIC_RELAY_IP="TOPOLOGY" \
-    PATH="/root/.cabal/bin/:/scripts/:/cardano-node/scripts/:${PATH}"
+    PATH="/root/.cabal/bin/:/scripts/:/cardano-node/scripts/:${PATH}" \
+    LD_LIBRARY_PATH="/usr/local/lib"
 
 # Add config
 ADD cfg-templates/ /cfg-templates/
