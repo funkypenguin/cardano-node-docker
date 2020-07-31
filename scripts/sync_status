@@ -16,6 +16,6 @@ now=$(date +'%s')
 epoch=$(expr \( $now - $start \) / $epoch_length)
 slot=$(expr \( $now - $start \) % $epoch_length)
 unSlot=$(expr $epoch \* $epoch_length + $slot)
-currentUnSlot=$(cardano-cli shelley query tip --mainnet | grep -oP 'unSlotNo = \K\d+')
+currentUnSlot=$(cardano-cli shelley query tip --testnet-magic 42 | grep -oP 'unSlotNo = \K\d+')
 
 echo "slot $currentUnSlot/$unSlot $(expr $currentUnSlot \* 100 / $unSlot)%"

@@ -77,7 +77,7 @@ if [ ! -f "pool.cert" ]; then
         --pool-owner-stake-verification-key-file stake.vkey \
         --pool-relay-port ${PUBLIC_RELAY_PORT} \
         --pool-relay-ipv4 ${PUBLIC_RELAY_IP} \
-        --metadata-url '${METADATA_URL}' \
+        --metadata-url ${METADATA_URL} \
         --metadata-hash ${METADATA_HASH} \
         ${NETWORK_ARGUMENT} \
         --out-file pool.cert \

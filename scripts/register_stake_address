@@ -81,9 +81,8 @@ FEE=$(cardano-cli shelley transaction calculate-min-fee \
     --tx-in-count 1 \
     --tx-out-count 1 \
     ${NETWORK_ARGUMENT} \
-    --signing-key-file payment.skey \
-    --signing-key-file stake.skey \
-    --certificate-file stake.cert \
+    --witness-count 1 \
+    --byron-witness-count 0 \
     --protocol-params-file protocol.json | tr ' ' '\n' | tail -1)
 TOTAL_PRICE=$(expr ${FEE} + ${KEY_DEPOSIT})
 
