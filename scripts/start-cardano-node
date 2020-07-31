@@ -40,6 +40,7 @@ function help {
     echo "HOST_ADDR                     Set cardano-node host address. Defaults to public IP address."
     echo "CARDANO_NETWORK               Carano network to use (main, test, pioneer). Default: main."
     echo "EKG_PORT                      Port of EKG monitoring. Default: 12788."
+    echo "PROMETHEUS_HOST               Host of Prometheus monitoring. Default: 127.0.0.1."
     echo "PROMETHEUS_PORT               Port of Prometheus monitoring. Default: 12798."
     echo "RESOLVE_HOSTNAMES             Resolve topology hostnames to IP-addresses. Default: False."
     echo "REPLACE_EXISTING_CONFIG       Reset and replace existing configs. Default: False."

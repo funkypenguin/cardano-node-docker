@@ -40,7 +40,7 @@ if [ ! -f "payment.addr" ]; then
         --payment-verification-key-file payment.vkey \
         --stake-verification-key-file stake.vkey \
         --out-file payment.addr \
-        ${NETWORK_ARGUMENT}
+        --mainnet
     echo "Generated payment.addr."
     PAYMENT_ADDR=$(cat payment.addr)
     echo "Payment address: ${PAYMENT_ADDR}."
@@ -54,7 +54,7 @@ if [ ! -f "stake.addr" ]; then
     cardano-cli shelley stake-address build \
         --stake-verification-key-file stake.vkey \
         --out-file stake.addr \
-        ${NETWORK_ARGUMENT}
+        --mainnet
     
     echo "Generated stake.addr."
     STAKE_ADDR=$(cat stake.addr)

@@ -18,9 +18,10 @@ function create_and_register_pool {
 
     # Start creation
     generate_stake_address
+    register_stake_address
+
     generate_operational_certificate LIVE
     generate_registration_certificates
-    register_stake_address
     register_stake_pool
 
 }

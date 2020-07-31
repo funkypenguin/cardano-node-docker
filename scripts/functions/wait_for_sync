@@ -3,17 +3,14 @@ function wait_for_sync {
     wait_for_socket
     WAIT_FOR_SYNC=$1
 
-    SYNC_PCT=$(sync_status | tr ' ' '\n' | tail -1 | sed 's/%//g')
-
-    if [ "$SYNC_PCT" -lt "$WAIT_FOR_SYNC" ]; then
-        echo "Waiting for node to sync to atleast ${WAIT_FOR_SYNC}%"
-        while true; do
-            SYNC_PCT=$(sync_status | tr ' ' '\n' | tail -1 | sed 's/%//g')
-            sync_status
-            if [ "$SYNC_PCT" -ge "$WAIT_FOR_SYNC" ]; then  
-                break
-            fi
-            sleep 10
-        done
-    fi
+    echo "Waiting for node to sync to atleast ${WAIT_FOR_SYNC}%"
+    while true; do
+        SYNC_PCT=$(sync_status | tr ' ' '\n' | tail -1 | sed 's/%//g' | bc)
+        sync_status
+        if [[ (($SYNC_PCT > $WAIT_FOR_SYNC)) ]]; then  
+            echo "Reached ${SYNC_PCT}%"
+            break
+        fi
+        sleep 10
+    done
 }

@@ -1,8 +1,8 @@
 version: "3"
 services:
-  local-stn-producing: # block-producing node
-    image: arrakis/cardano-node:1.14.1
-    container_name: local-stn-producing
+  mc4-producing: # block-producing node
+    image: arrakis/cardano-node:latest
+    container_name: mc4-producing
     network_mode: host
     volumes:
       - $PWD/config/local/:/config
@@ -10,12 +10,13 @@ services:
       - PUID=1000
       - PGID=1001
       - NODE_PORT=3000
-      - NODE_NAME=local-block-producing
+      - NODE_NAME=mc4-block-producing
       - NODE_TOPOLOGY=127.0.0.1:3001/1
       - NODE_RELAY=False
-      - CARDANO_NETWORK=shelley_test
+      - CARDANO_NETWORK=mc4
       - EKG_PORT=12888
       - PROMETHEUS_PORT=12898
+      - PROMETHEUS_HOST=127.0.0.1
       - HOST_ADDR=127.0.0.1
       - POOL_PLEDGE=100000000000
       - POOL_COST=1000000000
@@ -25,9 +26,9 @@ services:
       - PUBLIC_RELAY_IP=PUBLIC
     command: --start
     restart: unless-stopped
-  local-stn-relay: # relay node
-    image: arrakis/cardano-node:1.14.1
-    container_name: local-stn-relay
+  mc4-relay1: # relay node
+    image: arrakis/cardano-node:latest
+    container_name: mc4-relay1
     network_mode: host
     volumes:
       - $PWD/config/local/:/config
@@ -35,12 +36,13 @@ services:
       - PUID=1000
       - PGID=1001
       - NODE_PORT=3001
-      - NODE_NAME=local-relay1
+      - NODE_NAME=mc4-relay1
       - NODE_TOPOLOGY=127.0.0.1:3000/1
       - NODE_RELAY=True
-      - CARDANO_NETWORK=shelley_test
+      - CARDANO_NETWORK=mc4
       - EKG_PORT=12889
       - PROMETHEUS_PORT=12899
+      - PROMETHEUS_HOST=127.0.0.1
       - HOST_ADDR=0.0.0.0
     command: --start
     restart: unless-stopped

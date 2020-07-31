@@ -39,6 +39,7 @@ def init_args():
     parser.add_argument('--node-relay', dest='relay', help='Set to 1 if default IOHK relay should be added to the network topology.', type=str2bool, default=os.environ.get('NODE_RELAY', False))
     parser.add_argument('--cardano-network', dest='network', help='Carano network to use (main, test, pioneer). Defaults to main.', type=str, default=os.environ.get('CARDANO_NETWORK', 'main'))
     parser.add_argument('--ekg-port', dest='ekg_port', help='Port of EKG monitoring. Defaults to 12788.', type=int, default=os.environ.get('EKG_PORT', 12788))
+    parser.add_argument('--prometheus-host', dest='prometheus_host', help='Host of Prometheus monitoring. Defaults to 127.0.0.1.', type=str, default=os.environ.get('PROMETHEUS_HOST', '127.0.0.1'))
     parser.add_argument('--prometheus-port', dest='prometheus_port', help='Port of Prometheus monitoring. Defaults to 12798.', type=int, default=os.environ.get('PROMETHEUS_PORT', 12798))
     parser.add_argument('--resolve-hostnames', dest='resolve_hostnames', help='Resolve hostnames in topology to IP-addresses.', type=str2bool, default=os.environ.get('RESOLVE_HOSTNAMES', False))
     parser.add_argument('--replace-existing', dest='replace_existing', help='Replace existing configs.', type=str2bool, default=os.environ.get('REPLACE_EXISTING_CONFIG', False))  
@@ -48,8 +49,8 @@ def init_args():
     args.CONFIG_TEMPLATES_PATH = os.path.join(CONFIG_TEMPLATES_ROOT_PATH, args.network)
     CONFIG_NAME = args.network+'-'+args.name
     args.CONFIG_OUTPUT_PATH = os.path.join(CONFIG_OUTPUT_ROOT_PATH, CONFIG_NAME)
-    args.BYRON_GENESIS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'mainnet-byron-genesis.json')
-    args.SHELLEY_GENESIS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'mainnet-shelley-genesis.json')
+    args.BYRON_GENESIS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'byron-genesis.json')
+    args.SHELLEY_GENESIS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'shelley-genesis.json')
     args.TOPOLOGY_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'topology.json')
     args.CONFIG_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'config.json')
     args.VARS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'VARS')
@@ -60,6 +61,21 @@ def init_folder(args):
     """Creates network/node config folders"""
     if not os.path.exists(args.CONFIG_OUTPUT_PATH):
         os.makedirs(args.CONFIG_OUTPUT_PATH)
+
+def init_genesis(args):
+    """Initializes the genesis file"""
+
+    SHELLEY_SRC = os.path.join(args.CONFIG_TEMPLATES_PATH, 'shelley-genesis.json')
+    BYRON_SRC = os.path.join(args.CONFIG_TEMPLATES_PATH, 'byron-genesis.json')
+
+    if not os.path.exists(args.SHELLEY_GENESIS_PATH) or args.replace_existing:
+        print('Generating new shelley genesis file %s from template %s' % (args.SHELLEY_GENESIS_PATH, SHELLEY_SRC))
+        shutil.copy(SHELLEY_SRC, args.SHELLEY_GENESIS_PATH)
+
+    if not os.path.exists(args.BYRON_GENESIS_PATH) or args.replace_existing:
+        print('Generating new byron genesis file %s from template %s' % (args.BYRON_GENESIS_PATH, BYRON_SRC))
+        shutil.copy(BYRON_SRC, args.BYRON_GENESIS_PATH)
+
 
 def resolve_hostname(hostname, tries=0):
     """Resolve IP from hostname"""
@@ -125,9 +141,10 @@ def init_config(args):
         print('Generating new config file %s from template %s' % (args.CONFIG_PATH, INPUT_PATH))
 
         data = load_json(INPUT_PATH)
-        #data['GenesisFile'] = args.GENESIS_PATH
-        #data['hasEKG'] = args.ekg_port
-        #data['hasPrometheus'] = ['127.0.0.1', args.prometheus_port]
+        data['hasEKG'] = args.ekg_port
+        data['hasPrometheus'] = [args.prometheus_host, args.prometheus_port]
+        data['ShelleyGenesisFile'] = args.SHELLEY_GENESIS_PATH
+        data['ByronGenesisFile'] = args.BYRON_GENESIS_PATH
         save_json(args.CONFIG_PATH, data)
 
 def init_vars(args):

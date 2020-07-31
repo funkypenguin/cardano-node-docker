@@ -42,8 +42,8 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
     && git fetch --all --tags \
     && git checkout $CARDANO_BRANCH
 WORKDIR /cardano-node/
-RUN echo -e "package cardano-crypto-praos\n  flags: -external-libsodium-vrf" > cabal.project.local
-RUN cabal build all
+#RUN echo -e "package cardano-crypto-praos\n  flags: -external-libsodium-vrf" > cabal.project.local
+#RUN cabal build all
 RUN cabal install cardano-node cardano-cli
 
 from debian:stable-slim
@@ -80,6 +80,7 @@ ENV NODE_PORT="3000" \
     NODE_RELAY="False" \
     CARDANO_NETWORK="mainnet" \
     EKG_PORT="12788" \
+    PROMETHEUS_HOST="127.0.0.1" \
     PROMETHEUS_PORT="12798" \
     RESOLVE_HOSTNAMES="False" \
     REPLACE_EXISTING_CONFIG="False" \
@@ -91,6 +92,8 @@ ENV NODE_PORT="3000" \
     PUBLIC_RELAY_IP="TOPOLOGY" \
     PATH="/root/.cabal/bin/:/scripts/:/cardano-node/scripts/:${PATH}" \
     LD_LIBRARY_PATH="/usr/local/lib"
+    WAIT_FOR_SYNC="True" \
+    PATH="/root/.cabal/bin/:/scripts/:/cardano-node/scripts/:${PATH}"
 
 # Add config
 ADD cfg-templates/ /cfg-templates/

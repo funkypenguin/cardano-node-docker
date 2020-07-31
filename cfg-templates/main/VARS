@@ -1,1 +1,2 @@
-NETWORK_ARGUMENT="--mainnet"
+export NETWORK_ARGUMENT="--mainnet"
+export HARDFORK_EPOCH=208

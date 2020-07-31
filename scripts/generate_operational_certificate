@@ -58,13 +58,17 @@ if [ -z "$TIP" ]; then
     read -p "Enter the current tip slot: " TIP
 elif [ "$TIP" == "LIVE" ]; then
     echo "Getting slot from live socket"
-    wait_for_sync 99
+
+    if [[ "${WAIT_FOR_SYNC}" == "True" ]]; then
+        wait_for_sync 99.90
+    fi
+
     TIP=$(get_slot)
 fi
 
 # Get KESPeriod
-SLOTSPERKESPERIOD=$(cat ${NODE_PATH}/mainnet-shelley-genesis.json | grep slotsPerKESPeriod | tr ' ' '\n' | tail -1 | sed 's/,//g')
-MAXKESEVOLUTIONS=$(cat ${NODE_PATH}/mainnet-shelley-genesis.json | grep maxKESEvolutions | tr ' ' '\n' | tail -1 | sed 's/,//g')
+SLOTSPERKESPERIOD=$(jq -r '.slotsPerKESPeriod' ${NODE_PATH}/shelley-genesis.json)
+MAXKESEVOLUTIONS=$(jq -r '.maxKESEvolutions' ${NODE_PATH}/shelley-genesis.json)
 MAXKESSLOTS=$(expr ${SLOTSPERKESPERIOD} \* ${MAXKESEVOLUTIONS})
 KESPERIOD=$(expr ${TIP} / ${SLOTSPERKESPERIOD})
 EXPIRESLOT=$(expr ${TIP} + ${MAXKESSLOTS})
