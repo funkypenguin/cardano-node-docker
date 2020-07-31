@@ -63,8 +63,8 @@ elif [ "$TIP" == "LIVE" ]; then
 fi
 
 # Get KESPeriod
-SLOTSPERKESPERIOD=$(cat ${NODE_PATH}/genesis.json | grep slotsPerKESPeriod | tr ' ' '\n' | tail -1 | sed 's/,//g')
-MAXKESEVOLUTIONS=$(cat ${NODE_PATH}/genesis.json | grep maxKESEvolutions | tr ' ' '\n' | tail -1 | sed 's/,//g')
+SLOTSPERKESPERIOD=$(cat ${NODE_PATH}/mainnet-shelley-genesis.json | grep slotsPerKESPeriod | tr ' ' '\n' | tail -1 | sed 's/,//g')
+MAXKESEVOLUTIONS=$(cat ${NODE_PATH}/mainnet-shelley-genesis.json | grep maxKESEvolutions | tr ' ' '\n' | tail -1 | sed 's/,//g')
 MAXKESSLOTS=$(expr ${SLOTSPERKESPERIOD} \* ${MAXKESEVOLUTIONS})
 KESPERIOD=$(expr ${TIP} / ${SLOTSPERKESPERIOD})
 EXPIRESLOT=$(expr ${TIP} + ${MAXKESSLOTS})

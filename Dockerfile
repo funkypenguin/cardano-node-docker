@@ -1,6 +1,8 @@
+ARG CARDANO_BRANCH=1.18.0
+ARG USERID=65534
+
 from debian:stable-slim as builder
 LABEL maintainer="dro@arrakis.it"
-ARG CARDANO_BRANCH=1.18.0
 
 # Install build dependencies
 RUN apt-get update -y
@@ -51,7 +53,20 @@ COPY --from=builder /root/.cabal/bin/cardano-* /usr/local/bin/
 COPY --from=builder /usr/local/lib/libsodium* /usr/local/lib/
 
 # Install tools
-RUN apt-get update && apt-get install -y vim procps dnsutils python3 python3-pip tmux && \
+RUN apt-get update && \
+    apt-get install -y \
+        dnsutils    \
+        jq          \
+        net-tools   \ 
+        netcat      \
+        procps      \ 
+        python3     \
+        python3-pip \ 
+        telnet      \
+        tmux        \
+        vim         \
+        wget        \
+        &&          \
     rm -rf /var/lib/apt/lists/*
 
 # Expose ports
@@ -63,15 +78,15 @@ ENV NODE_PORT="3000" \
     NODE_NAME="node1" \
     NODE_TOPOLOGY="" \
     NODE_RELAY="False" \
-    CARDANO_NETWORK="main" \
+    CARDANO_NETWORK="mainnet" \
     EKG_PORT="12788" \
     PROMETHEUS_PORT="12798" \
     RESOLVE_HOSTNAMES="False" \
     REPLACE_EXISTING_CONFIG="False" \
     CREATE_STAKEPOOL="False" \
     POOL_PLEDGE="100000000000" \
-    POOL_COST="10000000000" \
-    POOL_MARGIN="0.05" \
+    POOL_COST="340000000" \
+    POOL_MARGIN="0.031415" \
     METADATA_URL="" \
     PUBLIC_RELAY_IP="TOPOLOGY" \
     PATH="/root/.cabal/bin/:/scripts/:/cardano-node/scripts/:${PATH}" \
@@ -79,7 +94,7 @@ ENV NODE_PORT="3000" \
 
 # Add config
 ADD cfg-templates/ /cfg-templates/
-RUN mkdir -p /config/
+RUN mkdir -p /config/socket && chown -R nobody /config/
 VOLUME /config/
 
 # Add scripts

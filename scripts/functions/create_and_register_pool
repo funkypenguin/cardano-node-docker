@@ -23,6 +23,4 @@ function create_and_register_pool {
     register_stake_address
     register_stake_pool
 
-    # Stop syncing cardano-node so block-producing node can be started
-    killall -9 cardano-node
 }

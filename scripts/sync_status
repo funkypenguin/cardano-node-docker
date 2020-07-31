@@ -1,6 +1,9 @@
 #!/bin/bash
 # Thanks to Smaug from https://t.me/CardanoStakePoolWorkgroup
 
+echo "this status thing doesn't work currently, but it doesn't impact functionality"
+exit
+
 source /scripts/functions/wait_for_socket
 wait_for_socket
 
@@ -13,6 +16,6 @@ now=$(date +'%s')
 epoch=$(expr \( $now - $start \) / $epoch_length)
 slot=$(expr \( $now - $start \) % $epoch_length)
 unSlot=$(expr $epoch \* $epoch_length + $slot)
-currentUnSlot=$(cardano-cli shelley query tip --testnet-magic 42 | grep -oP 'unSlotNo = \K\d+')
+currentUnSlot=$(cardano-cli shelley query tip --mainnet | grep -oP 'unSlotNo = \K\d+')
 
 echo "slot $currentUnSlot/$unSlot $(expr $currentUnSlot \* 100 / $unSlot)%"

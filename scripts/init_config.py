@@ -48,7 +48,8 @@ def init_args():
     args.CONFIG_TEMPLATES_PATH = os.path.join(CONFIG_TEMPLATES_ROOT_PATH, args.network)
     CONFIG_NAME = args.network+'-'+args.name
     args.CONFIG_OUTPUT_PATH = os.path.join(CONFIG_OUTPUT_ROOT_PATH, CONFIG_NAME)
-    args.GENESIS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'genesis.json')
+    args.BYRON_GENESIS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'mainnet-byron-genesis.json')
+    args.SHELLEY_GENESIS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'mainnet-shelley-genesis.json')
     args.TOPOLOGY_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'topology.json')
     args.CONFIG_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'config.json')
     args.VARS_PATH = os.path.join(args.CONFIG_OUTPUT_PATH, 'VARS')
@@ -59,17 +60,6 @@ def init_folder(args):
     """Creates network/node config folders"""
     if not os.path.exists(args.CONFIG_OUTPUT_PATH):
         os.makedirs(args.CONFIG_OUTPUT_PATH)
-
-def init_genesis(args):
-    """Initializes the genesis file"""
-
-    INPUT_PATH = os.path.join(args.CONFIG_TEMPLATES_PATH, 'genesis.json')
-
-    if not os.path.exists(args.GENESIS_PATH) or args.replace_existing:
-        print('Generating new genesis file %s from template %s' % (args.GENESIS_PATH, INPUT_PATH))
-
-        data = load_json(INPUT_PATH)
-        save_json(args.GENESIS_PATH, data)
 
 def resolve_hostname(hostname, tries=0):
     """Resolve IP from hostname"""
@@ -135,9 +125,9 @@ def init_config(args):
         print('Generating new config file %s from template %s' % (args.CONFIG_PATH, INPUT_PATH))
 
         data = load_json(INPUT_PATH)
-        data['GenesisFile'] = args.GENESIS_PATH
-        data['hasEKG'] = args.ekg_port
-        data['hasPrometheus'] = ['127.0.0.1', args.prometheus_port]
+        #data['GenesisFile'] = args.GENESIS_PATH
+        #data['hasEKG'] = args.ekg_port
+        #data['hasPrometheus'] = ['127.0.0.1', args.prometheus_port]
         save_json(args.CONFIG_PATH, data)
 
 def init_vars(args):
@@ -153,7 +143,6 @@ if __name__ == '__main__':
     args = init_args()
 
     init_folder(args)
-    init_genesis(args)
     init_topology(args)
     init_config(args)
     init_vars(args)

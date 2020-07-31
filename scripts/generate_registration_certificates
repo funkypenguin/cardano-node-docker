@@ -64,6 +64,9 @@ if [ ! -f "pool.cert" ]; then
     echo "Public Relay IP: ${PUBLIC_RELAY_IP}"
     echo "Public Relay Port: ${PUBLIC_RELAY_PORT}"
 
+    # DEBUG - remove when done
+    set -x
+
     cardano-cli shelley stake-pool registration-certificate \
         --cold-verification-key-file cold-keys/cold.vkey \
         --vrf-verification-key-file pool-keys/vrf.vkey \
@@ -79,6 +82,7 @@ if [ ! -f "pool.cert" ]; then
         ${NETWORK_ARGUMENT} \
         --out-file pool.cert \
     && echo "Generated pool.cert"
+    set +x
     echo "export POOL_PLEDGE=${POOL_PLEDGE}" > POOL_VARS
     echo "export POOL_COST=${POOL_COST}" >> POOL_VARS
     echo "export POOL_MARGIN=${POOL_MARGIN}" >> POOL_VARS

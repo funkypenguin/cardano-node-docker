@@ -80,7 +80,6 @@ TTL=$(expr ${SLOT} + 500)
 FEE=$(cardano-cli shelley transaction calculate-min-fee \
     --tx-in-count 1 \
     --tx-out-count 1 \
-    --ttl ${TTL} \
     ${NETWORK_ARGUMENT} \
     --signing-key-file payment.skey \
     --signing-key-file stake.skey \

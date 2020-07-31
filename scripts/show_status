@@ -1,0 +1,5 @@
+#!/bin/bash
+# Thanks to Smaug from https://t.me/CardanoStakePoolWorkgroup
+
+source /scripts/functions/status
+status

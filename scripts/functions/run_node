@@ -2,6 +2,9 @@ function run_node {
     source /scripts/init_node_vars
     source /scripts/functions/node_info
 
+    # Copy genesis files directly from template without modifying them
+    cp /cfg-templates/mainnet/*-genesis.json ${NODE_PATH}
+
     echo "Starting cardano-node"
     node_info
     cardano-node run \
