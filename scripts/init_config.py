@@ -160,6 +160,7 @@ if __name__ == '__main__':
     args = init_args()
 
     init_folder(args)
+    init_genesis(args)
     init_topology(args)
     init_config(args)
     init_vars(args)

@@ -78,7 +78,7 @@ ENV NODE_PORT="3000" \
     NODE_NAME="node1" \
     NODE_TOPOLOGY="" \
     NODE_RELAY="False" \
-    CARDANO_NETWORK="mainnet" \
+    CARDANO_NETWORK="main" \
     EKG_PORT="12788" \
     PROMETHEUS_HOST="127.0.0.1" \
     PROMETHEUS_PORT="12798" \
@@ -91,9 +91,8 @@ ENV NODE_PORT="3000" \
     METADATA_URL="" \
     PUBLIC_RELAY_IP="TOPOLOGY" \
     PATH="/root/.cabal/bin/:/scripts/:/cardano-node/scripts/:${PATH}" \
-    LD_LIBRARY_PATH="/usr/local/lib"
-    WAIT_FOR_SYNC="True" \
-    PATH="/root/.cabal/bin/:/scripts/:/cardano-node/scripts/:${PATH}"
+    LD_LIBRARY_PATH="/usr/local/lib" \
+    WAIT_FOR_SYNC="True"
 
 # Add config
 ADD cfg-templates/ /cfg-templates/
