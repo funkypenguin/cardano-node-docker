@@ -66,6 +66,8 @@ RUN apt-get update && \
         tmux        \
         vim         \
         wget        \
+        bc          \
+        curl        \
         &&          \
     rm -rf /var/lib/apt/lists/*
 

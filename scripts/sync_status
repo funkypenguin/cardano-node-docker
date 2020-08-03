@@ -1,9 +1,6 @@
 #!/bin/bash
 # Thanks to Smaug from https://t.me/CardanoStakePoolWorkgroup
 
-echo "this status thing doesn't work currently, but it doesn't impact functionality"
-exit
-
 source /scripts/functions/wait_for_socket
 wait_for_socket
 
