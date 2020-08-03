@@ -1,0 +1,11 @@
+#!/bin/bash
+# shellcheck disable=SC2086,SC2034
+
+source /scripts/functions/wait_for_sync
+
+# Get tip
+wait_for_sync 99.90
+TIP=$(get_slot)
+
+# Get topology
+curl -s "https://api.clio.one/htopology/v1/?port=${NODE_PORT}&blockNo=${TIP}&valency=1&hostname=${PUBLIC_RELAY_IP}"

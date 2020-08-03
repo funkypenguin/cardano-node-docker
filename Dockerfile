@@ -55,6 +55,7 @@ COPY --from=builder /usr/local/lib/libsodium* /usr/local/lib/
 # Install tools
 RUN apt-get update && \
     apt-get install -y \
+        curl        \
         dnsutils    \
         jq          \
         net-tools   \ 
