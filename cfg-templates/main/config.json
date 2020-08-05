@@ -12,7 +12,7 @@
   "ShelleyGenesisFile": "mainnet-shelley-genesis.json",
   "ShelleyGenesisHash": "1a3be38bcbb7911969283716ad7aa550250226b76a61fc51cc9a9a35d9276d81",
   "TraceBlockFetchClient": false,
-  "TraceBlockFetchDecisions": true,
+  "TraceBlockFetchDecisions": false,
   "TraceBlockFetchProtocol": false,
   "TraceBlockFetchProtocolSerialised": false,
   "TraceBlockFetchServer": false,
@@ -40,7 +40,7 @@
   "TracingVerbosity": "NormalVerbosity",
   "TurnOnLogMetrics": true,
   "TurnOnLogging": true,
-  "ViewMode": "LiveView",
+  "ViewMode": "SimpleView",
   "defaultBackends": [
     "KatipBK"
   ],
@@ -52,7 +52,7 @@
   ],
   "hasEKG": 12788,
   "hasPrometheus": [
-    "127.0.0.1",
+    "0.0.0.0",
     12798
   ],
   "minSeverity": "Info",
