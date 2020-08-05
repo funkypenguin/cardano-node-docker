@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2086,SC2034
 
+source /scripts/init_node_vars
 source /scripts/functions/wait_for_sync
 
 # Get tip

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Before we init functions, get the latest topology for US
+curl https://a.adapools.org/topology?geo=us&limit=20 -o /cfg-templates/topology-relay.json
+
 # Include functions
 source /scripts/init_node_vars
 source /scripts/functions/run_node
